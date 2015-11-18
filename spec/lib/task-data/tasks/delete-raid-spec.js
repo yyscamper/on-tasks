@@ -5,7 +5,7 @@
 
 describe(require('path').basename(__filename), function () {
     var base = require('./base-tasks-spec');
-    var hogan = require('hogan.js');
+    //var hogan = require('hogan.js');
 
     base.before(function (context) {
         context.taskdefinition = helper.require('/lib/task-data/tasks/delete-raid.js');
@@ -26,11 +26,11 @@ describe(require('path').basename(__filename), function () {
             expect(this.taskdefinition.options.commands).to.be.an('Array').with.length(1);
         });
 
-        it('command value could be parsed', function() {
+        /*it('command value could be parsed', function() {
             var cmd = this.taskdefinition.options.commands[0];
             expect(function() {
-                hogan.parse(hogan.scan(cmd))
+                hogan.parse(hogan.scan(cmd));
             }).to.not.throw(Error);
-        });
+        });*/
     });
 });

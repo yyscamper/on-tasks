@@ -266,12 +266,12 @@ describe("Task", function () {
 
         it("should render condition templates", function() {
             definition.options = {
-                testSource1: 'Test source 1 exist',
-                testVal1: '{{#options.testSource1}}{{ options.testSource1 }}{{/options.testSource1}}',
-                testVal2: '{{#options.testSource2}}{{ options.testSource2 }}{{/options.testSource2}}'
+                testSrc1: 'Test source 1 exist',
+                testVal1: '{{#options.testSrc1}}{{ options.testSrc1 }}{{/options.testSrc1}}',
+                testVal2: '{{#options.testSrc2}}{{ options.testSrc2 }}{{/options.testSrc2}}'
             };
             var task = Task.create(definition, {}, {});
-            expect(task.options.testVal1).to.equal(definition.options.testSource1);
+            expect(task.options.testVal1).to.equal(definition.options.testSrc1);
             expect(task.options.testVal2).to.equal('');
         });
 
