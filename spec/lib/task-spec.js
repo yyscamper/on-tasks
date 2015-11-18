@@ -242,6 +242,39 @@ describe("Task", function () {
             expect(task.options.nested3).to.equal(definition.options.sourceValue);
         });
 
+        it("should render iteration templates", function() {
+            definition.options = {
+                testList: [
+                    {
+                        name: 'item 1'
+                    },
+                    {
+                        name: 'item 2'
+                    },
+                    {
+                        name: 'item 3'
+                    }
+                ],
+                testVal: '{{#options.testList}}{{ name }}.{{/options.testList}}'
+            };
+            var task = Task.create(definition, {}, {});
+            var tempList = _.transform(definition.options.testList, function (result, n) {
+                result.push(n.name);
+            });
+            expect(task.options.testVal).to.equal(tempList.join('.') + '.');
+        });
+
+        it("should render condition templates", function() {
+            definition.options = {
+                testSource1: 'Test source 1 exist',
+                testVal1: '{{#options.testSource1}}{{ options.testSource1 }}{{/options.testSource1}}',
+                testVal2: '{{#options.testSource2}}{{ options.testSource2 }}{{/options.testSource2}}'
+            };
+            var task = Task.create(definition, {}, {});
+            expect(task.options.testVal1).to.equal(definition.options.testSource1);
+            expect(task.options.testVal2).to.equal('');
+        });
+
         describe('deferred rendering', function() {
             it("should defer renders for special values", function() {
                 definition.options = {
