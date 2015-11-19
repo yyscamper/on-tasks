@@ -1147,5 +1147,50 @@ describe("Task Parser", function () {
             });
         });
     });
+
+    describe("driveid Parsers", function () {
+        it("should parse driveid output", function (done) {
+            var driveidCmd = 'sudo ls /dev/disk/by-id/';
+
+            var tasks = [
+                {
+                    cmd: driveidCmd,
+                    stdout: stdoutMocks.driveidOutput,
+                    stderr: '',
+                    error: null
+                }
+            ];
+
+            taskParser.parseTasks(tasks)
+                .spread(function (result) {
+                    expect(result.error).to.be.undefined;
+                    expect(result.store).to.be.true;
+                    console.log(result);
+                    expect(result.data["esxiDriveIds"][0]).to.equal('t10.ATA_____SATADOM2DSV_3SE' +
+                        '__________________________20150522AA9992050085');
+                    expect(result.data["esxiDriveIds"][1]).to.equal('t10.ATA_____32GB_SATA_Flash_' +
+                        'Drive___________________B061430580090000000F');
+                    expect(result.data["esxiDriveIds"][2]).to.equal('t10.ATA_____64GB2DSATA3DFlash_' +
+                        'Drive___________________B061430580090000000F');
+                    expect(result.data["esxiDriveIds"][3]).to.equal('naa.60016360019401981dcdeb3c0563e780');
+                    expect(result.data["esxiDriveIds"][4]).to.equal('naa.5000c500725f45d7');
+                    expect(result.data["linuxDriveIds"][0]).to.
+                        equal("/dev/disk/by-id/ata-SATADOM-SV_3SE_20150522AA9992050085");
+                    expect(result.data["linuxDriveIds"][1]).to.
+                        equal("/dev/disk/by-id/ata-32GB_SATA_Flash_Drive_B061430580090000000F");
+                    expect(result.data["linuxDriveIds"][2]).to.
+                        equal("/dev/disk/by-id/ata-64GB-SATA-Flash_Drive_B061430580090000000F");
+                    expect(result.data["linuxDriveIds"][3]).to.
+                        equal("/dev/disk/by-id/scsi-360016360019401981dcdeb3c0563e780");
+                    expect(result.data["linuxDriveIds"][4]).to.
+                        equal("/dev/disk/by-id/scsi-35000c500725f45d7");
+                    expect(result.source).to.equal('driveid');
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+    });
 });
 
