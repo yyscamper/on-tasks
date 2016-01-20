@@ -71,6 +71,7 @@
         "request",
         "helper",
         "chai",
-        "sinon"
+        "sinon",
+        "_"
     ]
 }
