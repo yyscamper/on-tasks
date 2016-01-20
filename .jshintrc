@@ -57,21 +57,18 @@
 
     // Environments
     "node": true,
+    "mocha": true,
 
     //Custom Globals
     "predef" : [
-        "describe",
-        "it",
-        "before",
-        "beforeEach",
-        "after",
-        "afterEach",
-        "expect",
-        "should",
-        "request",
-        "helper",
+        "_",
         "chai",
+        "expect",
+        "helper",
+        "Promise",
+        "request",
+        "should",
         "sinon",
-        "_"
+        "sinonPromise"
     ]
 }
