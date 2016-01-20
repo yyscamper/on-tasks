@@ -221,5 +221,10 @@ describe('Analyze OS Repo Job', function () {
             expect(result).to.be.instanceof(Function);
             expect(result).to.equal(AnalyzeOsRepoJob.prototype._noop);
         });
+
+        it('xxx', function() {
+
+        });
+
     });
 });
