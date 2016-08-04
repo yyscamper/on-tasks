@@ -5,9 +5,10 @@
 
 var Ajv = require('ajv');
 var _unset = require('lodash.unset');
-var _toString = require('lodash.tostring');
 var glob = require('glob');
 var path = require('path');
+var jsonlint = require('jsonlint');
+var fs = require('fs');
 
 /**
  * load all jobs' injectable names
@@ -42,7 +43,15 @@ function loadSchemas(ajv) {
         return path.basename(filename) !== 'rackhd-task-schema.json';
     })
     .forEach(function (filename) {
-        ajv.addSchema(require(filename), path.basename(filename));
+        try {
+            var data = fs.readFileSync(filename).toString();
+            jsonlint.parse(data);
+            ajv.addSchema(JSON.parse(data), path.basename(filename));
+        }
+        catch(err) {
+            console.error('fail to add schema: ' + filename);
+            throw err;
+        }
     })
     .value();
     return ajv;
@@ -257,7 +266,7 @@ SchemaUnitTestHelper.prototype.setTest = function(setParams, expected, overrideC
             }
             _.forEach(setValues, function(val) {
                 it('should ' + (expected ? 'conform to ' : 'violate ') + 'the schema if ' +
-                        key + '=' + _toString(val), function(done) {
+                        key + '=' + JSON.stringify(val), function(done) {
                     if (_.get(canonicalData, key) === undefined) {
                         return done(new Error("The path " + key + "doesn't exist!"));
                     }
@@ -304,7 +313,7 @@ SchemaUnitTestHelper.prototype.unsetTest = function(unsetParams, expected, overr
 
         _.forEach(unsetParams, function(unsetParam) {
             it('should ' + (expected ? 'conform to ' : 'violate ') + 'the schema if ' +
-                    _toString(unsetParam) + " is unset" , function(done) {
+                    JSON.stringify(unsetParam) + " is unset" , function(done) {
 
                 if (!_.isArray(unsetParam)) {
                     unsetParam = [unsetParam];

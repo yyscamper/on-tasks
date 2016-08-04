@@ -221,7 +221,7 @@
             ]
         },
         "Kvm": {
-            "description": "a flag to indicate whether install kmv packages",
+            "description": "a flag to indicate whether install kvm packages",
             "type": "boolean"
         },
         "DnsServers": {
@@ -251,6 +251,7 @@
         "Repo": {
             "description": "The OS http repository which contains all data that required for os instllation",
             "type": "string",
+            "pattern": "^http://",
             "format": "uri"
         },
         "Hostname": {
