@@ -3,8 +3,6 @@
 
 'use strict';
 
-////////////fjalfjaljfl///////////////////////////////////////////////////////////////////////////////////////fafjlafj////
-//
 var uuid = require('node-uuid');
 var nock = require('nock'); //mock http request and response
 
@@ -30,7 +28,7 @@ describe("os-repo-tool", function () {
 
         it("should throw error if http status code is not correct", function() {
             nock('http://testrepo.com').get('/BOOT.CFG').reply(404);
-            return                            expect(repoTool.downloadViaHttp('http://testrepo.com/BOOT.CFG'))
+            return expect(repoTool.downloadViaHttp('http://testrepo.com/BOOT.CFG'))
                     .to.be.rejectedWith(Error);
         });
 
@@ -52,7 +50,7 @@ describe("os-repo-tool", function () {
         it("should get correct result after parsing", function() {
             var fileData =  'bootstate=0\ntitle=Loading ESXi installer\n' +
                             'kernel=/tBoot.b00\nkernelopt=runweasel\n' +
-                            'modules=/B.B00 --- /jumpSTRt.gz --- /useropts.gz\nbuild=\nupdated=0              ';
+                            'modules=/B.B00 --- /jumpSTRt.gz --- /useropts.gz\nbuild=\nupdated=0';
             var repo = 'http://testrepo.com';
             var result = repoTool.parseEsxBootCfgFile(fileData, repo);
             expect(result).to.have.property('tbootFile').to.equal(repo + '/tboot.b00');
