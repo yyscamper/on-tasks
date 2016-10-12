@@ -13,5 +13,4 @@ describe(require('path').basename(__filename), function () {
     describe('task-data', function () {
         base.examples();
     });
-
 });

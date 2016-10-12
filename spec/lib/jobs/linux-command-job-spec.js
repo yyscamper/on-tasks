@@ -13,21 +13,20 @@ describe('Linux Command Job', function () {
     function CommandUtil() { return commandUtil; }
 
     before(function() {
-        helper.setupInjector(
-            _.flattenDeep([
-                helper.require('/lib/jobs/base-job'),
-                helper.require('/lib/jobs/linux-command'),
-                helper.require('/lib/utils/job-utils/command-parser'),
-                helper.di.simpleWrapper(CommandUtil, 'JobUtils.Commands'),
-                helper.di.simpleWrapper({ catalogs:  {} }, 'Services.Waterline')
-            ])
-        );
+        helper.prepareJobInjector([
+            helper.require('/lib/jobs/linux-command'),
+            helper.require('/lib/utils/job-utils/command-parser'),
+            helper.di.simpleWrapper(CommandUtil, 'JobUtils.Commands'),
+            helper.di.simpleWrapper({ catalogs:  {} }, 'Services.Waterline')
+        ]);
 
         Promise = helper.injector.get('Promise');
         Logger = helper.injector.get('Logger');
         sinon.stub(Logger.prototype, 'log');
         LinuxCommandJob = helper.injector.get('Job.Linux.Commands');
         uuid = helper.injector.get('uuid');
+
+        return helper.startTaskServices();
     });
 
     after(function() {

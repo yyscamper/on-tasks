@@ -11,11 +11,10 @@ describe(require('path').basename(__filename), function () {
 
     base.before(function (context) {
         // create a child injector with on-core and the base pieces we need to test this
-        helper.setupInjector([
+        helper.prepareJobInjector([
             helper.require('/lib/services/base-obm-service.js'),
             helper.require('/lib/services/ipmi-obm-service.js'),
             helper.require('/lib/services/obm-service.js'),
-            helper.require('/lib/jobs/base-job.js'),
             helper.require('/lib/jobs/create-ipmi-obm-settings.js')
         ]);
 
@@ -31,7 +30,9 @@ describe(require('path').basename(__filename), function () {
         };
 
         var encryption = helper.injector.get('Services.Encryption');
-        return encryption.start();
+        return encryption.start().then(function() {
+            return helper.startTaskServices();
+        });
     });
 
     describe('Base', function () {

@@ -12,7 +12,7 @@ module.exports = {
     },
 
     examples: function () {
-        var validator, sandbox;
+        var validator, sandbox, Task;
         var mockWaterline = {
             nodes: {
                 needByIdentifier: sinon.stub().resolves({})
@@ -36,7 +36,8 @@ module.exports = {
             })
             .then(function() {
                 validator = helper.injector.get('TaskOption.Validator');
-                return validator.register();
+                Task = helper.injector.get('Task.Task');
+                return helper.startTaskServices();
             });
         });
 
@@ -56,8 +57,10 @@ module.exports = {
             });
 
             it('should have an implementsTask', function() {
-                expect(this.taskdefinition).to.have.property('implementsTask');
-                expect(this.taskdefinition.implementsTask).to.be.a('string');
+                if (!this.taskdefinition.hasOwnProperty('runJob')) {
+                    expect(this.taskdefinition).to.have.property('implementsTask');
+                    expect(this.taskdefinition.implementsTask).to.be.a('string');
+                }
             });
 
             it('should have options', function() {
@@ -75,7 +78,8 @@ module.exports = {
                 //enable this test case for all tasks
                 //TODO: enable this test case for all tasks after all tasks have schema defined.
                 if (this.taskdefinition.hasOwnProperty('schemaRef')) {
-                    var schema = validator.getSchema(this.taskdefinition.schemaRef);
+                    console.log(validator.getAllSchemaNames());
+                    var schema = validator.getTaskSchema(this.taskdefinition.schemaRef);
                     expect(schema).to.be.an('object');
                 }
             });
@@ -91,7 +95,7 @@ module.exports = {
                 }
 
                 var schema = _.cloneDeep(
-                    validator.getSchemaResolved(this.taskdefinition.schemaRef));
+                    validator.getResolvedTaskSchema(this.taskdefinition.schemaRef));
                 schema.$schema = "http://json-schema.org/draft-04/schema#"; //To make faker happy
 
                 var faker = require('json-schema-faker');

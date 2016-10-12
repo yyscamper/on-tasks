@@ -14,18 +14,17 @@ describe('Linux Catalog Job', function () {
     function CommandUtil() { return commandUtil; }
 
     before(function() {
-        helper.setupInjector(
-            _.flattenDeep([
-                helper.require('/lib/jobs/base-job'),
-                helper.require('/lib/jobs/linux-catalog'),
-                helper.di.simpleWrapper(parser, 'JobUtils.CommandParser'),
-                helper.di.simpleWrapper(CommandUtil, 'JobUtils.Commands'),
-                helper.di.simpleWrapper(waterline, 'Services.Waterline')
-            ])
-        );
+        helper.prepareJobInjector([
+            helper.require('/lib/jobs/linux-catalog'),
+            helper.di.simpleWrapper(parser, 'JobUtils.CommandParser'),
+            helper.di.simpleWrapper(CommandUtil, 'JobUtils.Commands'),
+            helper.di.simpleWrapper(waterline, 'Services.Waterline')
+        ]);
         this.sandbox = sinon.sandbox.create();
         LinuxCatalogJob = helper.injector.get('Job.Linux.Catalog');
         uuid = helper.injector.get('uuid');
+
+        return helper.startTaskServices();
     });
 
     describe('_run', function() {

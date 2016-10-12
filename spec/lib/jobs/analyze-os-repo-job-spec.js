@@ -25,16 +25,15 @@ describe('Analyze OS Repo Job', function () {
     var repo = 'http://testrepo.com';
 
     before(function() {
-        helper.setupInjector(
-            _.flattenDeep([
-                helper.require('/lib/jobs/base-job'),
-                helper.require('/lib/jobs/analyze-os-repo-job.js'),
-                helper.require('/lib/utils/job-utils/os-repo-tool.js')
-            ])
-        );
+        helper.prepareJobInjector([
+            helper.require('/lib/jobs/analyze-os-repo-job.js'),
+            helper.require('/lib/utils/job-utils/os-repo-tool.js')
+        ]);
 
         AnalyzeOsRepoJob = helper.injector.get('Job.Os.Analyze.Repo');
         repoTool = helper.injector.get('JobUtils.OsRepoTool');
+
+        return helper.startTaskServices();
     });
 
     describe('analyze ESXi repository', function() {
@@ -124,39 +123,23 @@ describe('Analyze OS Repo Job', function () {
                 });
             });
 
-            it('should not call the ESXi handling function if osName is not \'ESXi\'', function() {
-                job = new AnalyzeOsRepoJob(
-                    {
-                        version: '6.0',
-                        repo: 'http://testrepo.com',
-                        osName: 'testNotExistedOs'
-                    },
-                    context,
-                    taskId
-                );
-                job._ESXiHandle = sinon.stub().resolves(esxiParseResult);
-                return job._run().then(function() {
-                    expect(job._ESXiHandle).to.not.have.been.called;
-                });
+            it('should throw error if the osName is not supported', function() {
+                expect(function() {
+                    new AnalyzeOsRepoJob(
+                        {
+                            version: '6.0',
+                            repo: 'http://testrepo.com',
+                            osName: 'testNotExistedOs'
+                        },
+                        context,
+                        taskId
+                    );
+                }).to.throw(Error);
             });
         });
     });
 
     describe('common options conversion', function() {
-        it('should convert the repo to correct format', function() {
-            job = new AnalyzeOsRepoJob(
-                {
-                    version: '6.0',
-                    repo: 'http://testrepo.com/',
-                    osName: 'anyone'
-                },
-                context,
-                taskId
-            );
-            expect(job.options).have.property('repo').to.equal('http://testrepo.com');
-            expect(job).have.property('nodeId').to.equal('testId');
-        });
-
         describe('test the behavior if not have required options', function() {
             var keys = ['repo', 'osName'];
             var options = {
@@ -185,7 +168,7 @@ describe('Analyze OS Repo Job', function () {
                 {
                     version: '6.0',
                     repo: 'http://testrepo.com',
-                    osName: randOsName
+                    osName: 'ESXi'
                 },
                 context,
                 taskId
@@ -194,15 +177,6 @@ describe('Analyze OS Repo Job', function () {
 
         afterEach(function() {
             delete job[handleFnName];
-        });
-
-        it('should find correct handle function', function() {
-            job[handleFnName] = sinon.stub();
-            sinon.spy(job, '_ESXiHandle');
-            return job._run().then(function() {
-                expect(job[handleFnName]).to.have.been.called;
-                expect(job._ESXiHandle).to.not.have.been.called;
-            });
         });
 
         it('should throw error if the handler is not a function', function() {
