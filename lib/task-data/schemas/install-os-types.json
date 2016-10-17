@@ -1,13 +1,9 @@
 {
-    "$schema": "rackhd-task-schema.json",
     "copyright": "Copyright 2016, EMC, Inc.",
-    "title": "Install OS Types",
-    "description": "The paramters type definition schema for install os",
-    "describeJob": "Job.Os.Install",
     "definitions": {
         "OsType": {
             "description": "The type of OS which is used by code internally",
-            "enum": [ "esx", "linux" ]
+            "enum": [ "esx", "linux", "windows" ]
         },
         "UserName": {
             "description": "The user account name",
@@ -280,7 +276,7 @@
         "InstallScriptUri": {
             "type": "string",
             "description": "The URL address the node used to download the install script",
-            "format": "uri"
+            "pattern": "^http://"
         },
         "RackHDCallbackScript": {
             "type": "string",

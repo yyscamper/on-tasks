@@ -1,0 +1,6 @@
+{
+    "copyright": "Copyright 2016, EMC, Inc.",
+    "allOf": [
+        { "$ref": "install-os-types.json#/definitions/BasicOptions" }
+    ]
+}

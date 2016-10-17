@@ -1,9 +1,5 @@
 {
-    "$schema": "rackhd-task-schema.json",
     "copyright": "Copyright 2016, EMC, Inc.",
-    "title": "Install ESXi",
-    "description": "The parameters for ESXi installation",
-    "describeJob": "Job.Os.Install",
     "definitions": {
         "PostInstallCommands": {
             "type": "array",
@@ -94,7 +90,6 @@
         }
     },
     "allOf": [
-        { "$ref": "common-task-options.json#/definitions/Options" },
         { "$ref": "install-os-types.json#/definitions/BasicOptions" },
         { "$ref": "install-os-types.json#/definitions/AdvanceOptionsWithSimpleUser" },
         { "$ref": "#/definitions/EsxiSpecificOptions" }
