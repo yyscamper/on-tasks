@@ -83,6 +83,10 @@
                 },
                 "comportaddress": {
                     "$ref": "#/definitions/ComportAddress"
+                },
+                "kargs": {
+                    "type": "object",
+                    "description": "an arbitary number of keyword arguments"
                 }
             },
             "required": [

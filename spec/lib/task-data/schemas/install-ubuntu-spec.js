@@ -8,15 +8,22 @@ describe(require('path').basename(__filename), function() {
 
     var partialCanonical = {
         "baseUrl": "ubuntu.baseUrl",
+        "kargs": {
+            foo: 'a',
+            bar: 'any'
+        }
     };
 
     var positiveSetParam = {
+        kargs: [{}, {a: 1}]
     };
 
     var negativeSetParam = {
+        kargs: ['a=1', 'abc', null, '']
     };
 
     var positiveUnsetParam = [
+        'kargs'
     ];
 
     var negativeUnsetParam = [

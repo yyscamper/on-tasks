@@ -93,25 +93,32 @@ describe(require('path').basename(__filename), function() {
         "esxBootConfigTemplate": "esx-boot-cfg",
         "esxBootConfigTemplateUri": "http://172.31.128.1:9080/api/1.1/templates/esx-boot-cfg",
         "comport": "com1",
-        "comportaddress": "0x3f8"
+        "comportaddress": "0x3f8",
+        "kargs": {
+            "foo": "a",
+            "bar": "any"
+        }
     };
 
     var positiveSetParam = {
         "comportaddress": ["0x3f8", "0x2f8", "0x3e8", "0x2e8"],
         "networkDevices[0].device": "90:e2:ba:91:1b:e4",
-        "switchDevices[0].uplinks[0]": "90:e2:ba:91:1b:e4"
+        "switchDevices[0].uplinks[0]": "90:e2:ba:91:1b:e4",
+        "kargs": [{}, {a:1}]
     };
 
     var negativeSetParam = {
         "comportaddress": ["com1", "com2", 1, 0x3f8],
         "switchDevices[0].uplinks[1]": "vmnic0", //cannot set duplicated uplinks
         "switchDevices[0]": { "switchName": "vSwitch1" }, //cannot set duplicated switchDevice
-        "ntpServers[0]": "1.vmware.pool.ntp.org" //cannot set duplicated ntpServers
+        "ntpServers[0]": "1.vmware.pool.ntp.org", //cannot set duplicated ntpServers,
+        "kargs": ["a=1", "a:1", '', null, ['a','b']]
     };
 
     var positiveUnsetParam = [
         "postInstallCommands",
-        "switchDevices"
+        "switchDevices",
+        "kargs"
     ];
 
     var negativeUnsetParam = [
