@@ -59,7 +59,7 @@ describe(require('path').basename(__filename), function() {
                 }
             },
             {
-                "device": "vmnic1",
+                "device": "aa:bb:cc:11:22:33",
                 "ipv4": {
                     "ipAddr": "192.168.11.89",
                     "gateway": "192.168.11.1",

@@ -6,11 +6,29 @@
 describe(require('path').basename(__filename), function() {
     var schemaFileName = 'install-windows.json';
 
-    var partialCanonical = {
+    var canonical = {
+        osType: 'windows',
+        profile: 'install-windows.ipxe',
+        hostname: 'localhost',
+        domain: 'rackhd',
+        username: 'onrack',
+        password: 'mypassword',
+        networkDevices: [
+            {
+                device: 'Ethernet',
+                ipv4: {
+                    ipAddr: '172.31.128.222',
+                    gateway: '192.168.1.1',
+                    netmask: '255.255.252.0',
+                    vlanIds: [104, 100]
+                }
+            }
+        ],
         productkey: 'xxxx-xxxx-xxxx-xxxx-xxxx',
         smbUser: 'onrack',
         smbPassword: 'onrack',
-        smbRepo: '\\\\172.31.128.1\\windowsServer2012'
+        smbRepo: '\\\\172.31.128.1\\windowsServer2012',
+        repo: 'http://172.31.128.1:8080/winpe'
     };
 
     var positiveSetParam = {
@@ -25,18 +43,27 @@ describe(require('path').basename(__filename), function() {
     };
 
     var positiveUnsetParam = [
+        'hostname',
+        'domain',
+        'username',
+        'password',
+        'networkDevices',
+        'networkDevices[0].ipv4.vlanIds'
     ];
 
     var negativeUnsetParam = [
+        'osType',
+        'profile',
         'productkey',
         'smbUser',
         'smbPassword',
-        'smbRepo'
+        'smbRepo',
+        'repo',
+        'networkDevices[0].device',
+        'networkDevices[0].ipv4.ipAddr',
+        'networkDevices[0].ipv4.netmask',
+        'networkDevices[0].ipv4.gateway'
     ];
-
-    var installOsCommonHelper = require('./install-os-schema-ut-helper');
-    var canonical = _.defaults(partialCanonical, installOsCommonHelper.canonical);
-    installOsCommonHelper.test(schemaFileName, canonical);
 
     var SchemaUtHelper = require('./schema-ut-helper');
     new SchemaUtHelper(schemaFileName, canonical).batchTest(

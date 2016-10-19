@@ -2,13 +2,13 @@
     "copyright": "Copyright 2016, EMC, Inc.",
     "properties": {
         "version": {
-            "$ref": "install-os-types.json#/definitions/Version"
+            "$ref": "types-installos.json#/definitions/Version"
         },
         "repo": {
-            "$ref": "install-os-types.json#/definitions/Repo"
+            "$ref": "types-installos.json#/definitions/Repo"
         },
         "profile": {
-            "$ref": "install-os-types.json#/definitions/Profile"
+            "$ref": "types-installos.json#/definitions/Profile"
         }
     },
     "required": ["version", "repo", "profile"]

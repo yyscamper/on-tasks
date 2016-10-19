@@ -27,9 +27,9 @@
             "minimum": 500,
             "maximum": 65535
         },
-        "UserAccountInfoSimple": {
+        "UserAccountBasic": {
             "type": "object",
-            "description": "The simple information for an user account",
+            "description": "The basic information for an user account",
             "properties": {
                 "name": {
                     "$ref": "#/definitions/UserName"
@@ -43,12 +43,12 @@
             },
             "required": ["name", "password"]
         },
-        "UserAccountInfoFull": {
+        "UserAccountAdvance": {
             "type": "object",
-            "description": "The full information for an user account",
+            "description": "The advance information for an user account",
             "allOf": [
                 {
-                    "$ref": "#/definitions/UserAccountInfoSimple"
+                    "$ref": "#/definitions/UserAccountBasic"
                 },
                 {
                     "type": "object",
@@ -60,21 +60,21 @@
                 }
             ]
         },
-        "UsersSimple": {
-            "description": "The list of user account that will be created during OS installation, it supports simple user account information",
+        "UserArrayBasic": {
+            "description": "The list of user account that will be created during OS installation, it supports basic user account information",
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/UserAccountInfoSimple"
+                "$ref": "#/definitions/UserAccountBasic"
             },
             "uniqueItems": true
         },
-        "UsersFull": {
+        "UserArrayAdvance": {
             "description": "The list of user account that will be created during OS installation, it supports full user account information",
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/UserAccountInfoFull"
+                "$ref": "#/definitions/UserAccountAdvance"
             },
             "uniqueItems": true
         },
@@ -160,7 +160,7 @@
             "required": ["device"],
             "additionalProperties": true
         },
-        "NetworkDevices": {
+        "NetworkDeviceArray": {
             "description": "The network configuration for each NIC",
             "type": "array",
             "minItems": 1,
@@ -188,7 +188,7 @@
             },
             "required": ["mountPoint", "size"]
         },
-        "InstallPartitions": {
+        "InstallPartitionArray": {
             "description": "specify the installDisk's partition if you don't like OS's auto partition policy",
             "type": "array",
             "items": {
@@ -220,7 +220,7 @@
             "description": "a flag to indicate whether install kvm packages",
             "type": "boolean"
         },
-        "DnsServers": {
+        "DnsServerArray": {
             "description": "The list of DNS servers",
             "type": "array",
             "minItems": 1,
@@ -230,7 +230,7 @@
             },
             "uniqueItems": true
         },
-        "NtpServers": {
+        "NtpServerArray": {
             "description": "The list of NTP servers",
             "type": "array",
             "minItems": 1,
@@ -282,93 +282,6 @@
             "type": "string",
             "description": "The file name of callback script that will be called when the first time the OS boots up",
             "minLength": 1
-        },
-        "BasicOptions": {
-            "type": "object",
-            "properties": {
-                "osType": {
-                    "$ref": "#/definitions/OsType",
-                    "readonly": true
-                },
-                "version": {
-                    "$ref": "#/definitions/Version"
-                },
-                "repo": {
-                    "$ref": "#/definitions/Repo"
-                },
-                "hostname": {
-                    "$ref": "#/definitions/Hostname"
-                },
-                "installDisk": {
-                    "$ref": "#/definitions/InstallDisk"
-                },
-                "profile": {
-                    "$ref": "#/definitions/Profile"
-                },
-                "installScript": {
-                    "$ref": "#/definitions/InstallScript"
-                },
-                "installScriptUri": {
-                    "$ref": "#/definitions/InstallScriptUri"
-                },
-                "comport": {
-                    "$ref": "#/definitions/Comport"
-                }
-            },
-            "required": ["osType", "version", "repo", "hostname", "profile",
-                "installScript", "installScriptUri", "comport"]
-        },
-        "AdvanceOptionsCommon": {
-            "type": "object",
-            "properties": {
-                "rootPassword": {
-                    "$ref": "#/definitions/UserPassword"
-                },
-                "rootSshKey": {
-                    "$ref": "#/definitions/SshKey"
-                },
-                "domain": {
-                    "$ref": "#/definitions/Domain"
-                },
-                "dnsServers": {
-                    "$ref": "#/definitions/DnsServers"
-                },
-                "ntpServers": {
-                    "$ref": "#/definitions/NtpServers"
-                },
-                "networkDevices": {
-                    "$ref": "#/definitions/NetworkDevices"
-                },
-                "kvm": {
-                    "$ref": "#/definitions/Kvm"
-                },
-                "installPartitions": {
-                    "$ref": "#/definitions/InstallPartitions"
-                }
-            },
-            "required": ["rootPassword"]
-        },
-        "AdvanceOptions": {
-            "allOf": [
-                { "$ref": "#/definitions/AdvanceOptionsCommon" },
-                {
-                    "type": "object",
-                    "properties": {
-                        "users": { "$ref": "#/definitions/UsersFull" }
-                    }
-                }
-            ]
-        },
-        "AdvanceOptionsWithSimpleUser": {
-            "allOf": [
-                { "$ref": "#/definitions/AdvanceOptionsCommon" },
-                {
-                    "type": "object",
-                    "properties": {
-                        "users": { "$ref": "#/definitions/UsersSimple" }
-                    }
-                }
-            ]
         }
     }
 }
