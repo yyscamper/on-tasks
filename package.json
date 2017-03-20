@@ -32,6 +32,8 @@
     "chai": "^2.0.0",
     "chai-as-promised": "^4.2.0",
     "coveralls": "^2.11.4",
+    "eslint": "^3.18.0",
+    "eslint-config-google": "^0.7.1",
     "glob": "^4.3.2",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",

@@ -2,7 +2,10 @@
 engines:
   eslint:
     enabled: true
+    config:
+      config: ./.eslintrc.json
+  duplication:
+      enabled: false
 ratings:
   paths:
   - "**.js"
-exclude_paths: 
