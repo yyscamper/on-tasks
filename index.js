@@ -7,6 +7,21 @@ var di = require('di'),
     core = require('on-core')(di);
 var temp = require('temp');
 
+
+function abc() {                                                                             var a = 1;
+
+var b = 2, c = 3;
+b++;
+
+if (a = 1){
+    console.log('a' + a);
+}
+
+for (var i = 0; i < 10; i++)
+        b+=2;
+
+}
+
 module.exports = {
     injectables: _.flattenDeep([
         core.helper.requireWrapper('ssh2', 'ssh', undefined, __dirname),
